@@ -165,7 +165,7 @@ export default function VideoPortfolio() {
       category: 'Talking Head',
       client: 'Doctor Hunnah',
       color: 'from-indigo-500 to-purple-500',
-      videoUrl: 'https://drive.google.com/file/d/1TTPa6TO_7pNRqnfqzmjS83eN-hDi7hXU/preview',
+      videoUrl: 'https://drive.google.com/file/d/1D7yOOtHh230opKYVDk7IJ4EWR4MIllv1/preview',
       type: 'embeDd'
     },
 
