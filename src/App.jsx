@@ -104,6 +104,7 @@ export default function VideoPortfolio() {
   const projects = [
     {
       id: 1,
+      thumbnail: '/thumbnails/wedding-makeup.jpg',
       title: 'Wedding Makeup Look',
       category: 'Brand Reels',
       client: 'Lush Look',
@@ -113,6 +114,7 @@ export default function VideoPortfolio() {
     },
     {
       id: 2,
+      thumbnail: '/thumbnails/cloud-bedding.jpg',
       title: 'Cloud Bedding FB Ad',
       category: 'Brand Reels',
       client: 'Cloud Bedding',
@@ -122,6 +124,7 @@ export default function VideoPortfolio() {
     },
     {
       id: 3,
+      thumbnail: '/thumbnails/creative-souls.jpg',
       title: 'Creative Souls Marketing Ad',
       category: 'Brand Reels',
       client: 'Creative Souls',
@@ -131,6 +134,7 @@ export default function VideoPortfolio() {
     },
     {
       id: 6,
+      thumbnail: '/thumbnails/networth.jpg',
       title: 'Net Worth Levels in USA',
       category: 'Finance & Investment',
       client: 'Mr Phill',
@@ -140,6 +144,7 @@ export default function VideoPortfolio() {
     },
     {
       id: 7,
+      thumbnail: '/thumbnails/egypt.jpg',
       title: 'Egypt, Cultural Hub',
       category: 'Documentary',
       client: 'Ahmed Ali',
@@ -149,6 +154,7 @@ export default function VideoPortfolio() {
     },
     {
       id: 9,
+      thumbnail: '/thumbnails/tiktok-quiz.jpg',
       title: 'TikTok Quiz Video',
       category: 'Social Media',
       client: 'Creative Souls',
@@ -158,6 +164,7 @@ export default function VideoPortfolio() {
     },
     {
       id: 10,
+      thumbnail: '/thumbnails/protein-icecream.jpg',
       title: 'Best Protien Icecream',
       category: 'Fitness',
       client: 'Mr Joe',
@@ -179,6 +186,7 @@ export default function VideoPortfolio() {
     },
     {
       id: 15,
+      thumbnail: '/thumbnails/ai-vs-lawyers.jpg',
       title: 'AI VS LAWYERS',
       category: 'Talking Head',
       client: 'Steve on Law',
@@ -188,6 +196,7 @@ export default function VideoPortfolio() {
     },
     {
       id: 16,
+      thumbnail: '/thumbnails/anz.jpg',
       title: 'ANZ $240 million reckoning explained',
       category: 'Talking Head',
       client: 'Steve on Law',
@@ -197,6 +206,7 @@ export default function VideoPortfolio() {
     },
     {
       id: 17,
+      thumbnail: '/thumbnails/bank-heist.jpg',
       title: 'Bangladeshi bank heist',
       category: 'Talking Head',
       client: 'Andrew Explains',
@@ -207,6 +217,16 @@ export default function VideoPortfolio() {
   ];
 
   const categories = ['All', 'Brand Reels', 'Documentary', 'Fitness', 'Finance & Investment', 'Social Media' , 'Talking Head'];
+
+  const getThumb = (project) => {
+    if (project.thumbnail) return project.thumbnail;
+    const url = project.videoUrl;
+    const yt = url.match(/youtube\.com\/embed\/([\w-]+)/);
+    if (yt) return `https://img.youtube.com/vi/${yt[1]}/hqdefault.jpg`;
+    const dr = url.match(/drive\.google\.com\/file\/d\/([\w-]+)/);
+    if (dr) return `https://drive.google.com/thumbnail?id=${dr[1]}&sz=w640`;
+    return null;
+  };
 
   const filteredProjects = (selectedCategory === 'All'
     ? projects.filter(p => !p.hideInAll)
@@ -689,12 +709,13 @@ export default function VideoPortfolio() {
                 <div className={`absolute inset-0 bg-gradient-to-r ${project.color} opacity-0 group-hover:opacity-20 blur-xl transition-all duration-700`}></div>
                 
                 <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
-                  {project.thumb && (
+                  {getThumb(project) && (
                     <img
-                      src={`https://img.youtube.com/vi/${project.thumb}/hqdefault.jpg`}
+                      src={getThumb(project)}
                       alt={project.title}
                       className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500"
                       loading="lazy"
+                      referrerPolicy="no-referrer"
                       onError={(e) => { e.currentTarget.style.display = 'none'; }}
                     />
                   )}
