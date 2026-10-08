@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Users, Video, Mail, Phone, Instagram, Menu, X, Star, ChevronRight, Sparkles, Camera, Film, Zap, Award } from 'lucide-react';
+import { Play, Users, Video, Mail, Phone, Instagram, Menu, X, Star, ChevronRight, Sparkles, Camera, Film, Zap, Award, Flame, Eye } from 'lucide-react';
 
 export default function VideoPortfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -12,6 +12,36 @@ export default function VideoPortfolio() {
   const [clientsCount, setClientsCount] = useState(0);
   const [experienceCount, setExperienceCount] = useState(0);
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [viewsProgress, setViewsProgress] = useState(0);
+  const [viewsStarted, setViewsStarted] = useState(false);
+
+  const featuredVideos = [
+    {
+      id: 'dN65nqYylIo',
+      title: 'The 1.7M View Edit',
+      client: 'YouTube',
+      type: 'youtube',
+      views: 1.7,
+      videoUrl: 'https://www.youtube.com/embed/dN65nqYylIo?autoplay=1&rel=0'
+    },
+    {
+      id: 'tI9LcrHAerc',
+      title: 'The 1.4M View Edit',
+      client: 'YouTube',
+      type: 'youtube',
+      views: 1.4,
+      videoUrl: 'https://www.youtube.com/embed/tI9LcrHAerc?autoplay=1&rel=0'
+    }
+  ];
+  const totalViews = featuredVideos.reduce((sum, v) => sum + v.views, 0);
+  const shownViews = (target) => ((viewsProgress / 100) * target).toFixed(1);
+
+  const processSteps = [
+    { title: 'Hook', text: 'Open on the strongest moment so viewers stop scrolling in the first seconds.' },
+    { title: 'Story structure', text: 'Simple footage arranged into a clear beginning, build-up and payoff.' },
+    { title: 'Pacing and cuts', text: 'Every cut earns its place. No filler, no dead air, constant forward motion.' },
+    { title: 'Sound and finish', text: 'Music, sound effects and light polish that support the story without stealing focus.' }
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,13 +53,24 @@ export default function VideoPortfolio() {
         const rect = statsSection.getBoundingClientRect();
         if (rect.top < window.innerHeight && rect.bottom >= 0) {
           setCountersStarted(true);
-          animateCounter(0, 150, setProjectsCount, 2000);
+          animateCounter(0, 500, setProjectsCount, 2000);
           animateCounter(0, 50, setClientsCount, 2000);
-          animateCounter(0, 1.5, setExperienceCount, 2000, true);
+          animateCounter(0, 2, setExperienceCount, 2000);
         }
       }
     };
     
+    const handleViews = () => {
+      const el = document.getElementById('spotlight-section');
+      if (el && !viewsStarted) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom >= 0) {
+          setViewsStarted(true);
+          animateCounter(0, 100, setViewsProgress, 2200);
+        }
+      }
+    };
+
     const handleMouseMove = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
@@ -50,12 +91,15 @@ export default function VideoPortfolio() {
     };
     
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleViews);
     window.addEventListener('mousemove', handleMouseMove);
+    handleViews();
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleViews);
       window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, [countersStarted]);
+  }, [countersStarted, viewsStarted]);
 
   const projects = [
     {
@@ -83,24 +127,6 @@ export default function VideoPortfolio() {
       client: 'Creative Souls',
       color: 'from-purple-500 to-pink-500',
       videoUrl: 'https://drive.google.com/file/d/1JXg3LndyZgKSTIzj6ZBANoiDNzvzvovM/preview',
-      type: 'embed'
-    },
-    {
-      id: 4,
-      title: 'Traditional Vs Sustainable Aviation Feul',
-      category: 'Brand Reels',
-      client: 'Captain Ahmed From Emirates',
-      color: 'from-orange-500 to-red-500',
-      videoUrl: 'https://drive.google.com/file/d/10uncnGUq5TpNhgn5kdfUlE4yRlnkQSsU/preview',
-      type: 'embed'
-    },
-    {
-      id: 5,
-      title: 'African Raw Nature',
-      category: 'Brand Reels',
-      client: 'Safari World',
-      color: 'from-green-500 to-emerald-500',
-      videoUrl: 'https://drive.google.com/file/d/1U1Gv_hJrfxgpb_tnf8yBMOgzv68P6WUJ/preview',
       type: 'embed'
     },
     {
@@ -139,48 +165,58 @@ export default function VideoPortfolio() {
       videoUrl: 'https://drive.google.com/file/d/1LxPZVam2dBPkljQvkEtQMCTN12GG8tK-/preview',
       type: 'embeDd'
     },
-    {
-     id: 11,
-      title: 'Unique Bitcoin Case Study In Australian History',
-      category: 'Talking Head',
-      client: 'Mr Steve',
-      color: 'from-indigo-500 to-purple-500',
-      videoUrl: 'https://drive.google.com/file/d/15J2DUQr42m8uNfyCyZeytCDP80NVoNuF/preview',
-      type: 'embeDd'
-    },
 
     {
-     id: 12,
-      title: 'Where to invest in 2026 in Australia?',
-      category: 'Talking Head',
-      client: 'Mr Kumar',
-      color: 'from-indigo-500 to-purple-500',
-      videoUrl: 'https://drive.google.com/file/d/1TTPa6TO_7pNRqnfqzmjS83eN-hDi7hXU/preview',
-      type: 'embeDd'
+      id: 13,
+      title: '15 RICHEST Black Men In DETROIT...From The Assembly Line To BILLIONAIRE',
+      category: 'Documentary',
+      client: 'Black Status',
+      color: 'from-amber-500 to-red-500',
+      videoUrl: 'https://www.youtube.com/embed/nNffEpWhZzE?autoplay=1&rel=0',
+      type: 'youtube',
+      thumb: 'nNffEpWhZzE',
+      pin: 1
     },
-
     {
-     id: 13,
-      title: 'What is Vagus Nerve Stimulation?',
+      id: 15,
+      title: 'AI VS LAWYERS',
       category: 'Talking Head',
-      client: 'Doctor Hunnah',
-      color: 'from-indigo-500 to-purple-500',
-      videoUrl: 'https://drive.google.com/file/d/1D7yOOtHh230opKYVDk7IJ4EWR4MIllv1/preview',
-      type: 'embeDd'
+      client: 'Steve on Law',
+      color: 'from-indigo-500 to-blue-500',
+      videoUrl: 'https://drive.google.com/file/d/1CDB-Q_bbOr_BzisGxEGYT8P-zpOSTAef/preview',
+      type: 'embed'
     },
-
+    {
+      id: 16,
+      title: 'ANZ $240 million reckoning explained',
+      category: 'Talking Head',
+      client: 'Steve on Law',
+      color: 'from-purple-500 to-indigo-500',
+      videoUrl: 'https://drive.google.com/file/d/1gMS_7SGhoAjnD17MjgSuCKjg2B2sHSRE/preview',
+      type: 'embed'
+    },
+    {
+      id: 17,
+      title: 'Bangladeshi bank heist',
+      category: 'Talking Head',
+      client: 'Andrew Explains',
+      color: 'from-cyan-500 to-blue-500',
+      videoUrl: 'https://drive.google.com/file/d/1euHR3NyKogOjfR8J2nfFzYCeFPVP4vJb/preview',
+      type: 'embed'
+    },
   ];
 
   const categories = ['All', 'Brand Reels', 'Documentary', 'Fitness', 'Finance & Investment', 'Social Media' , 'Talking Head'];
 
-  const filteredProjects = selectedCategory === 'All'
-    ? projects
-    : projects.filter(p => p.category === selectedCategory);
+  const filteredProjects = (selectedCategory === 'All'
+    ? projects.filter(p => !p.hideInAll)
+    : projects.filter(p => p.category === selectedCategory)
+  ).sort((a, b) => (a.pin || 999) - (b.pin || 999));
 
   const stats = [
-    { icon: Video, label: 'Projects Completed', value: '150+', count: projectsCount, color: 'text-red-500' },
+    { icon: Video, label: 'Projects Completed', value: '500+', count: projectsCount, color: 'text-red-500' },
     { icon: Users, label: 'Happy Clients', value: '50+', count: clientsCount, color: 'text-blue-500' },
-    { icon: Star, label: 'Years Experience', value: '1.5+', count: experienceCount, color: 'text-purple-500' }
+    { icon: Star, label: 'Years Experience', value: '2+', count: experienceCount, color: 'text-purple-500' }
   ];
 
   const floatingIcons = [
@@ -482,6 +518,100 @@ export default function VideoPortfolio() {
         </div>
       </section>
 
+      {/* Spotlight: top performing videos */}
+      <section id="spotlight-section" className="py-24 px-4 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black"></div>
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center mb-14 animate-slide-in-up">
+            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-red-500/10 border border-red-500/40 text-red-400 mb-6">
+              <Flame className="w-4 h-4" />
+              <span className="font-semibold text-sm">Top Performers</span>
+            </div>
+            <h2 className="font-bold mb-6 leading-tight">
+              <span className="block text-3xl md:text-5xl text-white">
+                Simple Footage. Strong Story.
+              </span>
+              <span className="block mt-6 md:mt-8 text-4xl md:text-6xl bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 bg-clip-text text-transparent animate-gradient-shift">
+                {shownViews(totalViews)}M+ Views
+              </span>
+            </h2>
+            <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
+              Two videos, one approach: story first. Here are the edits, and how I built them.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {featuredVideos.map((video) => (
+              <div
+                key={video.id}
+                className="group relative bg-gray-900/50 rounded-2xl overflow-hidden border border-gray-800 hover:border-red-500/50 transition-all duration-500 cursor-pointer flex flex-col"
+                onClick={() => setSelectedVideo(video)}
+              >
+                <div className="relative aspect-video bg-gradient-to-br from-gray-900 via-red-950 to-black">
+                  <img
+                    src={`https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`}
+                    alt={video.title}
+                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                    loading="lazy"
+                    onError={(e) => {
+                      const img = e.currentTarget;
+                      if (!img.dataset.fallback) {
+                        img.dataset.fallback = '1';
+                        img.src = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
+                      } else {
+                        img.style.display = 'none';
+                      }
+                    }}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-2xl shadow-red-500/40">
+                      <Play className="w-10 h-10 text-white ml-1" fill="white" />
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6 flex items-center justify-between gap-4">
+                  <div className="min-w-0">
+                    <h3 className="text-lg font-bold mb-1 leading-snug">{video.title}</h3>
+                    <p className="text-sm text-gray-400">Tap to watch</p>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <div className="flex items-center gap-2 text-2xl md:text-3xl font-bold bg-gradient-to-r from-white to-red-300 bg-clip-text text-transparent">
+                      <Eye className="w-6 h-6 text-red-500" />
+                      {shownViews(video.views)}M+
+                    </div>
+                    <p className="text-xs text-gray-400">views on YouTube</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 bg-gray-900/50 rounded-2xl border border-gray-800 p-6 md:p-8">
+            <h3 className="text-2xl font-bold mb-6 text-center">How I edit them</h3>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {processSteps.map((step, i) => (
+                <div key={step.title} className="flex gap-4">
+                  <div className="w-10 h-10 flex-shrink-0 rounded-full bg-gradient-to-r from-red-500 to-purple-500 flex items-center justify-center font-bold text-sm">
+                    {String(i + 1).padStart(2, '0')}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white">{step.title}</h4>
+                    <p className="text-gray-400 text-sm leading-relaxed">{step.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-gray-400 mb-4">Want your next video to travel like this?</p>
+            <a href="#contact" className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-red-500 to-pink-500 rounded-full font-bold hover:scale-110 transition-all duration-300">
+              Let's Talk <ChevronRight className="w-5 h-5" />
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Stats Section */}
       <section id="stats-section" className="py-24 px-4 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black"></div>
@@ -499,7 +629,7 @@ export default function VideoPortfolio() {
                 <div className="text-3xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent relative group-hover:scale-110 transition-transform duration-500">
                   {countersStarted ? (
                     <>
-                      {index === 2 ? stat.count : Math.floor(stat.count)}+
+                      {Math.floor(stat.count)}+
                     </>
                   ) : '0+'}
                 </div>
@@ -559,6 +689,20 @@ export default function VideoPortfolio() {
                 <div className={`absolute inset-0 bg-gradient-to-r ${project.color} opacity-0 group-hover:opacity-20 blur-xl transition-all duration-700`}></div>
                 
                 <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+                  {project.thumb && (
+                    <img
+                      src={`https://img.youtube.com/vi/${project.thumb}/hqdefault.jpg`}
+                      alt={project.title}
+                      className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500"
+                      loading="lazy"
+                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                    />
+                  )}
+                  {project.views && (
+                    <div className="absolute top-3 right-3 z-10 px-3 py-1 rounded-full bg-black/70 backdrop-blur-sm border border-red-500/40 text-xs font-semibold text-red-300">
+                      {project.views}
+                    </div>
+                  )}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className={`w-24 h-24 rounded-full bg-gradient-to-r ${project.color} flex items-center justify-center transition-all duration-700 group-hover:scale-125 group-hover:rotate-12 group-hover:shadow-2xl`}>
                       <Play className="w-12 h-12 ml-2 text-white transition-all duration-500 group-hover:scale-110" />
@@ -648,8 +792,8 @@ export default function VideoPortfolio() {
             About Me
           </h2>
           <p className="text-lg text-gray-400 mb-6 leading-relaxed animate-fade-in">
-            I'm a passionate video editor with over 1.5 years of experience in creating compelling visual narratives. 
-            My journey began with a dream to tell stories that matter through powerful video content.
+            I'm a passionate video editor with over 2 years of experience and 500+ projects delivered. 
+            My edits have reached 1.7M+ and 1.4M+ views on single videos, built on simple footage and strong storytelling, because I believe a good story beats flashy effects every time.
           </p>
           <p className="text-lg text-gray-400 mb-12 leading-relaxed animate-fade-in">
             I specialize in Adobe Premiere Pro, After Effects, Filmora, and CapCut. 
@@ -658,15 +802,15 @@ export default function VideoPortfolio() {
           <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             <div className="flex flex-col items-center gap-4 p-6 bg-gray-800/30 rounded-xl border border-gray-700 hover:border-red-500/50 transition-all duration-300 hover:scale-105 animate-scale-in hover-lift button-3d group">
               <Award className="w-8 h-8 text-red-500 flex-shrink-0 group-hover:animate-bounce-slow" />
-              <span className="text-gray-300 font-medium text-center group-hover:text-white transition-colors duration-300">Certified Video Editor</span>
+              <span className="text-gray-300 font-medium text-center group-hover:text-white transition-colors duration-300">1.7M+ Views on a Single Video</span>
             </div>
             <div className="flex flex-col items-center gap-4 p-6 bg-gray-800/30 rounded-xl border border-gray-700 hover:border-red-500/50 transition-all duration-300 hover:scale-105 animate-scale-in hover-lift button-3d group" style={{ animationDelay: '0.1s' }}>
               <Sparkles className="w-8 h-8 text-red-500 flex-shrink-0 group-hover:animate-spin-slow" />
-              <span className="text-gray-300 font-medium text-center group-hover:text-white transition-colors duration-300">Color Grading Expert</span>
+              <span className="text-gray-300 font-medium text-center group-hover:text-white transition-colors duration-300">Storytelling-Driven Editing</span>
             </div>
             <div className="flex flex-col items-center gap-4 p-6 bg-gray-800/30 rounded-xl border border-gray-700 hover:border-red-500/50 transition-all duration-300 hover:scale-105 animate-scale-in hover-lift button-3d group" style={{ animationDelay: '0.2s' }}>
               <Zap className="w-8 h-8 text-red-500 flex-shrink-0 group-hover:animate-pulse" />
-              <span className="text-gray-300 font-medium text-center group-hover:text-white transition-colors duration-300">Motion Graphics Designer</span>
+              <span className="text-gray-300 font-medium text-center group-hover:text-white transition-colors duration-300">500+ Projects Delivered</span>
             </div>
           </div>
         </div>
